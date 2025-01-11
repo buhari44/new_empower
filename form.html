@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form</title>
+  <link rel="stylesheet" href="form.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <h1 class="logo">GANNETT</h1>
+      <a href="index.html" class="apply-now-btn">Home</a>
+    </div>
+  </header>
+    <div class="form-container">
+      <h1>Start planning your journey to financial freedom with your dream job</h1>
+      <p>Take a couple seconds to answer a few questions</p>
+      <form id="contact-form">
+        <div>
+          <input type="text" name="first_name" placeholder="First Name" required>
+        </div>
+        <div>
+          <input type="text" name="last_name" placeholder="Last Name" required>
+        </div>
+        <div>
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <div>
+          <input type="tel" name="phone" placeholder="Phone" required>
+        </div>
+        <div>
+          <input type="text" name="address" placeholder="Address" required>
+        </div>
+        <div>
+          <select name="employment_type" required>
+            <option value="" disabled selected>Type of Employment</option>
+            <option value="Part_Time">Part Time</option>
+            <option value="Full_Time">Full Time</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Custom alert -->
+    <div class="alert-overlay" id="alert-overlay"></div>
+    <div class="custom-alert" id="custom-alert" role="alert" aria-live="assertive">
+      <p id="alert-message"></p>
+      <button onclick="closeAlert()">OK</button>
+    </div>
+
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script>
+
+emailjs.init("Heb8zPuKpxdrecWD9"); // Replace with your EmailJS user ID
+
+    document.getElementById("contact-form").addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Collect form data
+      const formData = {
+        first_name: this.first_name.value,
+        last_name: this.last_name.value,
+        email: this.email.value,
+        phone: this.phone.value,
+        address: this.address.value,
+        employment_type: this.employment_type.value
+      };
+
+      // Send form data using EmailJS
+      emailjs
+        .send("service_i20xad6", "template_0asr0dr", formData)
+        .then((response) => {
+          console.log("SUCCESS!", response.status, response.text);
+          showAlert("Your form has been submitted successfully!");
+          document.getElementById("contact-form").reset(); // Reset the form
+        })
+        .catch((error) => {
+          console.error("FAILED...", error);
+          showAlert("There was an error submitting the form. Please try again.");
+        });
+    });
+
+    function showAlert(message) {
+      document.getElementById("alert-message").textContent = message;
+      document.getElementById("custom-alert").style.display = "block";
+      document.getElementById("alert-overlay").style.display = "block";
+      document.getElementById("custom-alert").querySelector("button").focus();
+    }
+
+    function closeAlert() {
+      document.getElementById("custom-alert").style.display = "none";
+      document.getElementById("alert-overlay").style.display = "none";
+    }
+</script>
+</body>
+</html>
+
+  
